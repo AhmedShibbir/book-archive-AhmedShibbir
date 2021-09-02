@@ -13,7 +13,8 @@ const searchBook = () => {
     searchedBook(searched);
 }
 const searchedBook = searched => {
-    fetch(`https://openlibrary.org/search.json?q=${searched}`)
+    const url = `https://openlibrary.org/search.json?q=${searched}`;
+    fetch(url)
     .then(res => res.json())
     .then(data => extractData(data))
 }
@@ -47,7 +48,8 @@ const individualBookData = element => {
     // console.log(element);
     //titles are of string type
     //cover_i are of number type
-    const {title,cover_i} = element;
+    const {title} = element;
+    const cover_i = element?.cover_i;
     const image = imageFetching(cover_i);
     //author_name,publish_date,publisher are array type
     const author_name = element.author_name;
@@ -74,10 +76,9 @@ const individualBookData = element => {
     loadingButton.classList.add("d-none");
 }
 const imageFetching = cover_i => {
-    if(cover_i){
-        fetch(`https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`)
-        .then(res => res.json())
-        .then(data => {return data})
+    if((typeof cover_i) !== "undefined"){
+        const url = `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`;
+        return url;
     }
     else{
         return "/image_not_found.png";
