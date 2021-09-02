@@ -8,6 +8,8 @@ const searchBook = () => {
     resultFoundArea.innerHTML = "";
     const cardContainer = document.getElementById("resultCards");
     cardContainer.innerHTML= "";
+    const loadingButton = document.getElementById("loading");
+    loadingButton.classList.remove("d-none")
     searchedBook(searched);
 }
 const searchedBook = searched => {
@@ -37,6 +39,7 @@ const individualBookData = element => {
     //titles are of string type
     //cover_i are of number type
     const {title,cover_i} = element;
+    const image = imageFetching(cover_i);
     //author_name,publish_date,publisher are array type
     const author_name = element.author_name;
     const publish_date = element.publish_date;
@@ -46,7 +49,7 @@ const individualBookData = element => {
     const card = document.createElement("div");
     card.innerHTML = `
     <div class="card" style="width: 18rem;">
-        <img src="#" class="card-img-top" alt="...">
+        <img src="${image}" class="card-img-top" alt="book's photo">
         <div class="card-body">
             <h5 class="card-title">${title}</h5>
         </div>
@@ -58,4 +61,16 @@ const individualBookData = element => {
     </div>
     `;
     cardContainer.appendChild(card);
+    const loadingButton = document.getElementById("loading");
+    loadingButton.classList.add("d-none");
+}
+const imageFetching = cover_i => {
+    if(cover_i){
+        fetch(`https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`)
+        .then(res => res.json())
+        .then(data => {return data})
+    }
+    else{
+        return "/image_not_found.png";
+    }
 }
