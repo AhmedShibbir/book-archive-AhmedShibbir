@@ -4,13 +4,26 @@ const searchBook = () => {
     const searchingInput = document.getElementById("searchingInput");
     const searched = searchingInput.value;
     searchingInput.value = '';
-    // searchedBook(searched);
+    searchedBook(searched);
 }
-const searchedBook = () => {
-    fetch("https://openlibrary.org/search.json?q=javascript")
+const searchedBook = searched => {
+    fetch(`https://openlibrary.org/search.json?q=${searched}`)
     .then(res => res.json())
-    .then(data => console.log(data))
-    
-    // console.log(searched);
+    .then(data => extractData(data))
 }
-searchedBook();
+const extractData = data => {
+    const {numFound} = data;
+    const showingData = data.docs.length;
+    data.docs.forEach(element => {
+        individualBookData(element);
+    });
+}
+const individualBookData = element => {
+    // console.log(element);
+    const {title} = element;
+    const author_name = element.author_name;
+    const publish_date = element.publish_date;
+    const publisher=element.publisher;
+    console.log(title,author_name,publish_date,publisher);
+    
+}
