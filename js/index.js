@@ -20,19 +20,28 @@ const searchedBook = searched => {
 const extractData = data => {
     const {numFound} = data;
     const showingData = data.docs.length;
-    const div = document.createElement("div");
-    const header1 = document.createElement("h1");
-    header1.innerText = `Total Results found by name: ${numFound}`;
-    div.appendChild(header1);
-    const header2 = document.createElement("h1");
-    header2.innerText = `Available to show: ${showingData}`;
-    div.appendChild(header2);
-    const resultFoundArea = document.getElementById("resultFoundArea");
-    resultFoundArea.innerHTML = "";
-    resultFoundArea.appendChild(div);
-    data.docs.forEach(element => {
+    if(numFound === 0){
+        const loadingButton = document.getElementById("loading");
+        loadingButton.classList.add("d-none");
+        const message = document.createElement("h1");
+        message.innerText = "Sorry, did not find any book to show. Try another one! ";
+        document.getElementById("resultFoundArea").appendChild(message);
+    }
+    else{
+        const div = document.createElement("div");
+        const header1 = document.createElement("h1");
+        header1.innerText = `Total Results found by name: ${numFound}`;
+        div.appendChild(header1);
+        const header2 = document.createElement("h1");
+        header2.innerText = `Available to show: ${showingData}`;
+        div.appendChild(header2);
+        const resultFoundArea = document.getElementById("resultFoundArea");
+        resultFoundArea.innerHTML = "";
+        resultFoundArea.appendChild(div);
+        data.docs.forEach(element => {
         individualBookData(element);
     });
+    }
 }
 const individualBookData = element => {
     // console.log(element);
