@@ -6,6 +6,8 @@ const searchBook = () => {
     searchingInput.value = '';
     const resultFoundArea = document.getElementById("resultFoundArea");
     resultFoundArea.innerHTML = "";
+    const cardContainer = document.getElementById("resultCards");
+    cardContainer.innerHTML= "";
     searchedBook(searched);
 }
 const searchedBook = searched => {
@@ -31,11 +33,29 @@ const extractData = data => {
     });
 }
 const individualBookData = element => {
-    console.log(element);
+    // console.log(element);
+    //titles are of string type
+    //cover_i are of number type
     const {title,cover_i} = element;
     //author_name,publish_date,publisher are array type
     const author_name = element.author_name;
     const publish_date = element.publish_date;
     const publisher = element.publisher;
-    // console.log(...author_name);
+    // console.log(`title: ${typeof title},cover_i: ${typeof cover_i},author_name: ${typeof author_name},publish_date: ${typeof publish_date}, publisher: ${typeof publisher}`);
+    const cardContainer = document.getElementById("resultCards");
+    const card = document.createElement("div");
+    card.innerHTML = `
+    <div class="card" style="width: 18rem;">
+        <img src="#" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">${title}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item text-white bg-black bg-opacity-75">Author: ${author_name}</li>
+            <li class="list-group-item text-white bg-success bg-opacity-50">Publishing Date: ${publish_date}</li>
+            <li class="list-group-item text-white bg-secondary bg-opacity-75">Publisher: ${publisher}</li>
+        </ul>
+    </div>
+    `;
+    cardContainer.appendChild(card);
 }
