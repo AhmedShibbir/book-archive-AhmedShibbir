@@ -2,7 +2,15 @@
 console.log("js connected"); */
 const searchBook = () => {
     const searchingInput = document.getElementById("searchingInput");
-    const searchedBook = searchingInput.value;
+    const searched = searchingInput.value;
     searchingInput.value = '';
-    console.log(searchedBook);
+    // searchedBook(searched);
 }
+const searchedBook = () => {
+    fetch("https://openlibrary.org/search.json?q=javascript")
+    .then(res => res.json())
+    .then(data => console.log(data))
+    
+    // console.log(searched);
+}
+searchedBook();
