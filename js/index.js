@@ -1,5 +1,4 @@
-/* js connection checking
-console.log("js connected"); */
+//onclick function
 const searchBook = () => {
     const searchingInput = document.getElementById("searchingInput");
     const searched = searchingInput.value;
@@ -12,15 +11,18 @@ const searchBook = () => {
     loadingButton.classList.remove("d-none")
     searchedBook(searched);
 }
+//dynamic url for api
 const searchedBook = searched => {
     const url = `https://openlibrary.org/search.json?q=${searched}`;
     fetch(url)
     .then(res => res.json())
     .then(data => extractData(data))
 }
+//data extraction from api
 const extractData = data => {
     const {numFound} = data;
     const showingData = data.docs.length;
+    //when no results found and giving notification
     if(numFound === 0){
         const loadingButton = document.getElementById("loading");
         loadingButton.classList.add("d-none");
@@ -28,10 +30,11 @@ const extractData = data => {
         message.innerText = "Sorry, did not find any book to show. Try another one! ";
         document.getElementById("resultFoundArea").appendChild(message);
     }
+    //when searched data is available
     else{
         const div = document.createElement("div");
         const header1 = document.createElement("h1");
-        header1.innerText = `Total Results found by name: ${numFound}`;
+        header1.innerText = `Total Results found in number: ${numFound}`;
         div.appendChild(header1);
         const header2 = document.createElement("h1");
         header2.innerText = `Available to show: ${showingData}`;
@@ -44,18 +47,14 @@ const extractData = data => {
     });
     }
 }
+//book's information setting on the card
 const individualBookData = element => {
-    // console.log(element);
-    //titles are of string type
-    //cover_i are of number type
     const {title} = element;
     const cover_i = element?.cover_i;
     const image = imageFetching(cover_i);
-    //author_name,publish_date,publisher are array type
     const author_name = element.author_name;
     const publish_date = element.publish_date;
     const publisher = element.publisher;
-    // console.log(`title: ${typeof title},cover_i: ${typeof cover_i},author_name: ${typeof author_name},publish_date: ${typeof publish_date}, publisher: ${typeof publisher}`);
     const cardContainer = document.getElementById("resultCards");
     const card = document.createElement("div");
     card.innerHTML = `
@@ -75,6 +74,7 @@ const individualBookData = element => {
     const loadingButton = document.getElementById("loading");
     loadingButton.classList.add("d-none");
 }
+//image's dynamic url setting part
 const imageFetching = cover_i => {
     if((typeof cover_i) !== "undefined"){
         const url = `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`;
